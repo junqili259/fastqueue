@@ -12,6 +12,7 @@ int main()
 	//cout << obj.capacity() << endl;
 	//obj.dequeue();
 
+	/*
 	obj.enqueue(1);
 	cout << "Size: " << obj.size() << endl;
 
@@ -38,8 +39,15 @@ int main()
 	obj.print();
 
 	obj.enqueue(11);
-	cout << "Size: " << obj.size() << endl;
-	cout << "Capacity: " << obj.capacity() << endl;
+	obj.enqueue(20);
+	*/
+
+	for (int i = 1; i <= 20; i++)
+	{
+		obj.enqueue(i);
+	}
+	obj.enqueue(21);
+	
 	
 	obj.print();
 
