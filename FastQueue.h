@@ -23,6 +23,8 @@ class FastQueue
 		int size();
 		int capacity();
 		void shrink_to_fit();
+
+		void print();
 	private:
 		std::vector<T> fast_q;
 		int number_of_elements;
