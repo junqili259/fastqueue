@@ -36,6 +36,15 @@ class FastQueue
 	
 };
 
+//bugs
+/*
+-readjust head_index and tail_index after increasing container size
+
+
+
+
+*/
+
 
 
 #include "FastQueue.cpp"

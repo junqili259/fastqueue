@@ -88,14 +88,13 @@ T& FastQueue<T>::head(){
 	{
 		if (size() == 0){
 			throw std::out_of_range("OUT OF RANGE ERROR: empty container");
-			
 		}
 	}
 	catch(std::out_of_range& error_msg)
 	{
 		std::cerr << error_msg.what() << std::endl;
 	}
-	return head_index;
+	return fast_q[head_index];
 }//end head
 
 //returns reference to the last element of the queue
@@ -111,7 +110,7 @@ T& FastQueue<T>::tail(){
 	{
 		std::cerr << error_msg.what() << std::endl;
 	}
-	return tail_index;
+	return fast_q[tail_index];
 }//end tail
 
 
