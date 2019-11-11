@@ -140,6 +140,10 @@ template<typename T>
 void FastQueue<T>::shrink_to_fit(){}//end shrink_to_fit
 
 
+
+
+//For debugging purposes only
+//prints entire container
 template<typename T>
 void FastQueue<T>::print(){
 	for(T item: fast_q){

@@ -24,6 +24,7 @@ class FastQueue
 		int capacity();
 		void shrink_to_fit();
 
+	//For debugging purposes
 		void print();
 	private:
 		std::vector<T> fast_q;
