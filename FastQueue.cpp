@@ -30,12 +30,12 @@ void FastQueue<T>::enqueue(T element){
 		std::vector<T> temp(new_size, 0);
 		
 
-
+		//insert all elements from 0 to tail_index into temp container
 		for (int i = 0; i <= tail_index; i++){
 			temp[i] = fast_q[i];
 		}
 		
-		
+		//insert all elements from head_index to last element into temp container
 		for (int j = new_size; new_size - head_index <= j; j--){
 			temp[j] = fast_q[size_of_container_copy];
 			size_of_container_copy--;
