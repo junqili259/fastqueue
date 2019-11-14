@@ -108,7 +108,6 @@ T& FastQueue<T>::head(){
 	{
 		if (size() == 0){
 			throw std::out_of_range("OUT OF RANGE ERROR: empty container");
-			
 		}
 	}
 	catch(std::out_of_range& error_msg)
