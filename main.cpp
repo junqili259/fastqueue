@@ -42,14 +42,24 @@ int main()
 	obj.enqueue(20);
 	*/
 
-	for (int i = 1; i <= 20; i++)
+	for (int i = 1; i <= 11; i++)
 	{
 		obj.enqueue(i);
 	}
-	obj.enqueue(21);
+	cout << "number of elements = " << obj.size() << endl;
+	
 	
 	
 	obj.print();
+	cout << obj.head() << endl;
+	cout << obj.tail() << endl;
+	obj.dequeue();
+	obj.dequeue();
+	obj.dequeue();
+	obj.dequeue();
+	obj.print();
+	cout << "head = " << obj.head() << endl;
+	cout << "number of elements = " << obj.size() << endl;
 
 	return 0;
 }

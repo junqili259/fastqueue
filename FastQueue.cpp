@@ -15,6 +15,8 @@ FastQueue<T>::FastQueue():number_of_elements{0}, size_of_container{10}, fast_q(1
 template<typename T>		
 void FastQueue<T>::enqueue(T element){
 
+	int size_copy = size_of_container;
+
  //if container is empty
 	if (number_of_elements == 0)
 	{
@@ -29,25 +31,30 @@ void FastQueue<T>::enqueue(T element){
 		int new_size = size_of_container*2;
 		std::vector<T> temp(new_size, 0);
 		
-
 		//insert all elements from 0 to tail_index into temp container
-		for (int i = 0; i <= tail_index; i++){
+		for (int i = 0; i <= tail_index; i++)
+		{
 			temp[i] = fast_q[i];
 		}
-		
+	
 		//insert all elements from head_index to last element into temp container
-		for (int j = new_size; new_size - head_index <= j; j--){
+		for (int j = new_size; new_size - head_index <= j; j--)
+		{
 			temp[j] = fast_q[size_of_container_copy];
 			size_of_container_copy--;
 		}
-		
 
-		size_of_container = new_size;
+		//move assignment temp container to fast_q
 		fast_q = std::move(temp);
 		
 		//insert new element
 		fast_q[++tail_index] = element;
 		number_of_elements++;
+		
+		
+		head_index = tail_index + size_of_container;
+		size_of_container = new_size;
+	
 	}
 	else if (tail_index < size_of_container - 1 && head_index <= tail_index)
 	{
@@ -74,7 +81,20 @@ void FastQueue<T>::enqueue(T element){
 //does nothing if queue is empty
 template<typename T>
 void FastQueue<T>::dequeue(){
-	
+
+	//if queue is empty, do nothing
+	if (!size() == 0)
+	{
+		fast_q[head_index] = 0;
+		number_of_elements--;
+		head_index++;
+		if (head_index == size_of_container)
+		{
+			head_index = 0;
+		}
+		
+	}
+	else return;
 	
 }//end dequeue
 
@@ -95,7 +115,8 @@ T& FastQueue<T>::head(){
 	{
 		std::cerr << error_msg.what() << std::endl;
 	}
-	return head_index;
+	return fast_q[head_index];
+	//return head_index;
 }//end head
 
 //returns reference to the last element of the queue
@@ -111,7 +132,7 @@ T& FastQueue<T>::tail(){
 	{
 		std::cerr << error_msg.what() << std::endl;
 	}
-	return tail_index;
+	return fast_q[tail_index];
 }//end tail
 
 
