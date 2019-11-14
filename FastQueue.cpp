@@ -14,7 +14,6 @@ FastQueue<T>::FastQueue():number_of_elements{0}, size_of_container{10}, fast_q(1
 //adds a news element to the end of the queue
 template<typename T>		
 void FastQueue<T>::enqueue(T element){
-
 	int size_copy = size_of_container;
 
  //if container is empty
@@ -29,32 +28,61 @@ void FastQueue<T>::enqueue(T element){
 	{
 		int size_of_container_copy = size_of_container;
 		int new_size = size_of_container*2;
-		std::vector<T> temp(new_size, 0);
+		std::vector<T> temp(new_size,0);
 		
+		/*
 		//insert all elements from 0 to tail_index into temp container
 		for (int i = 0; i <= tail_index; i++)
 		{
 			temp[i] = fast_q[i];
 		}
-	
+		
 		//insert all elements from head_index to last element into temp container
 		for (int j = new_size; new_size - head_index <= j; j--)
 		{
 			temp[j] = fast_q[size_of_container_copy];
 			size_of_container_copy--;
 		}
-
-		//move assignment temp container to fast_q
-		fast_q = std::move(temp);
+		
+		//swap temp container to fast_q
+		std::swap(fast_q, temp);
 		
 		//insert new element
 		fast_q[++tail_index] = element;
 		number_of_elements++;
 		
-		
 		head_index = tail_index + size_of_container;
 		size_of_container = new_size;
-	
+		*/
+
+		/*
+		int count = 0;
+		for (int i = head_index; i < size_of_container; i++)
+		{
+			temp[count] = fast_q[i];
+			count++;
+		}
+		*/
+
+		for (int i = 0; i < size_of_container; i++)
+		{
+			temp[i] = fast_q[(head_index+number_of_elements)%size_of_container];
+			head_index++;
+		}
+		head_index = 0;
+		tail_index = size_of_container - 1;
+		size_of_container = new_size;
+
+
+
+		std::swap(fast_q, temp);
+
+		fast_q[++tail_index] = element;
+		number_of_elements++;
+		
+		//print();
+		
+		
 	}
 	else if (tail_index < size_of_container - 1 && head_index <= tail_index)
 	{
@@ -94,9 +122,7 @@ void FastQueue<T>::dequeue(){
 		}
 		
 	}
-	else return;
-	
-}//end dequeue
+}//end dequeue()
 
 
 
@@ -109,55 +135,100 @@ T& FastQueue<T>::head(){
 		if (size() == 0){
 			throw std::out_of_range("OUT OF RANGE ERROR: empty container");
 		}
+		else
+			return fast_q[head_index];
 	}
 	catch(std::out_of_range& error_msg)
 	{
 		std::cerr << error_msg.what() << std::endl;
 	}
-	return fast_q[head_index];
-	//return head_index;
-}//end head
+}//end head()
 
 //returns reference to the last element of the queue
 //throws out of range if the container is empty
 template<typename T>
 T& FastQueue<T>::tail(){
 	try{
+		//check if empty, if so then throw error
 		if(size() == 0){
 			throw std::out_of_range("OUT OF RANGE ERROR: empty container");
 		}
+		else
+			//if not empty, return element at tail_index
+			return fast_q[tail_index];
 	}
 	catch(const std::out_of_range& error_msg)
 	{
+		//error message if exception throw
 		std::cerr << error_msg.what() << std::endl;
 	}
-	return fast_q[tail_index];
-}//end tail
+}//end tail()
 
 
 //returns reference to the index-th element of the queue.
 //throws out of range if container size is less than index
 template<typename T>
-T& FastQueue<T>::at(int index){}//end at
+T& FastQueue<T>::at(int index){
+	try
+	{
+		//throw out of range if there are less elements than index
+		if (size() <= index){
+			throw std::out_of_range("OUT OF RANGE ERROR: container size is less than index");
+		}
+		else
+		{
+			if (head_index + index < size_of_container)
+			{
+				return fast_q[head_index + index];
+			}
+			else
+			{
+				return fast_q[(head_index + index) - size_of_container];
+			}
+		}
+	}
+	catch(const std::out_of_range& e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
+	
+}//end at()
 
 
 //returns the number of elements in container
 template<typename T>
 int FastQueue<T>::size(){
 	return number_of_elements;
-}//end size
+}//end size()
 
 
 //returns size of allocated memory in terms of elements
 template<typename T>
 int FastQueue<T>::capacity(){
 	return size_of_container;
-}//end capacity
+}//end capacity()
 
 
 //shrinks the size of allocated memory to exactly fit the elements currently in queue
 template<typename T>
-void FastQueue<T>::shrink_to_fit(){}//end shrink_to_fit
+void FastQueue<T>::shrink_to_fit(){
+	std::vector<T> new_v(number_of_elements);
+
+	for (int i = 0; i < number_of_elements; i++)
+	{
+		new_v[i] = fast_q[(head_index + number_of_elements) % size_of_container];
+	}
+
+	std::swap(fast_q, new_v);
+
+	head_index = 0;
+	tail_index = number_of_elements - 1;
+
+	print();
+	
+	
+	
+}//end shrink_to_fit()
 
 
 
