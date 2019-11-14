@@ -16,85 +16,50 @@ template<typename T>
 void FastQueue<T>::enqueue(T element){
 	int size_copy = size_of_container;
 
- //if container is empty
+ 	//if container is empty
 	if (number_of_elements == 0)
 	{
 		fast_q[head_index] = element;
 		number_of_elements++;
 	}
 
- //if container is full?
+ 	//if container is full
 	else if(size_of_container == number_of_elements)
 	{
 		int size_of_container_copy = size_of_container;
 		int new_size = size_of_container*2;
 		std::vector<T> temp(new_size,0);
 		
-		/*
-		//insert all elements from 0 to tail_index into temp container
-		for (int i = 0; i <= tail_index; i++)
-		{
-			temp[i] = fast_q[i];
-		}
-		
-		//insert all elements from head_index to last element into temp container
-		for (int j = new_size; new_size - head_index <= j; j--)
-		{
-			temp[j] = fast_q[size_of_container_copy];
-			size_of_container_copy--;
-		}
-		
-		//swap temp container to fast_q
-		std::swap(fast_q, temp);
-		
-		//insert new element
-		fast_q[++tail_index] = element;
-		number_of_elements++;
-		
-		head_index = tail_index + size_of_container;
-		size_of_container = new_size;
-		*/
-
-		/*
-		int count = 0;
-		for (int i = head_index; i < size_of_container; i++)
-		{
-			temp[count] = fast_q[i];
-			count++;
-		}
-		*/
-
 		for (int i = 0; i < size_of_container; i++)
 		{
 			temp[i] = fast_q[(head_index+number_of_elements)%size_of_container];
 			head_index++;
 		}
+
+
 		head_index = 0;
 		tail_index = size_of_container - 1;
 		size_of_container = new_size;
-
-
 
 		std::swap(fast_q, temp);
 
 		fast_q[++tail_index] = element;
 		number_of_elements++;
-		
-		//print();
-		
-		
+
 	}
+	//if head_index is after the tail_index
 	else if (tail_index < size_of_container - 1 && head_index <= tail_index)
 	{
 		fast_q[++tail_index] = element;
 		number_of_elements++;
 	}
+	//if tail_index is before head_index
 	else if (tail_index < size_of_container - 1 && tail_index < head_index)
 	{
 		fast_q[++tail_index] = element;
 		number_of_elements++;
 	}
- //if out of range of container
+ 	//if out of range of container
 	else if(tail_index == size_of_container-1)
 	{
 		tail_index = 0;
@@ -120,7 +85,6 @@ void FastQueue<T>::dequeue(){
 		{
 			head_index = 0;
 		}
-		
 	}
 }//end dequeue()
 
@@ -212,21 +176,22 @@ int FastQueue<T>::capacity(){
 //shrinks the size of allocated memory to exactly fit the elements currently in queue
 template<typename T>
 void FastQueue<T>::shrink_to_fit(){
-	std::vector<T> new_v(number_of_elements);
-
+	std::vector<T> new_v(number_of_elements,0);
+	
+	
 	for (int i = 0; i < number_of_elements; i++)
 	{
-		new_v[i] = fast_q[(head_index + number_of_elements) % size_of_container];
+		new_v[i] = fast_q[(head_index + size_of_container)% size_of_container];
+		head_index++;
 	}
-
+	
 	std::swap(fast_q, new_v);
 
 	head_index = 0;
 	tail_index = number_of_elements - 1;
+	size_of_container = number_of_elements;
 
 	print();
-	
-	
 	
 }//end shrink_to_fit()
 
