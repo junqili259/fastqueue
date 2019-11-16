@@ -4,19 +4,19 @@
 
 #include"FastQueue.h"
 
-//creates vector of size 10 with all values set as 0
+//creates vector of initial size 10 with all values set as 0
 template<typename T>
-FastQueue<T>::FastQueue():number_of_elements{0}, size_of_container{10}, fast_q(10,0), head_index{5}, tail_index{5}
-{}//end constructor
+FastQueue<T>::FastQueue():number_of_elements{0}, size_of_container{10}, fast_q(10,0), head_index{5}, tail_index{5}{}//end constructor
 
 
 
 //adds a news element to the end of the queue
 template<typename T>		
-void FastQueue<T>::enqueue(T element){
+void FastQueue<T>::enqueue(const T& element)
+{
 	int size_copy = size_of_container;
 
- 	//if container is empty
+ 	//if container is empty, insert element at head
 	if (number_of_elements == 0)
 	{
 		fast_q[head_index] = element;
@@ -30,19 +30,21 @@ void FastQueue<T>::enqueue(T element){
 		int new_size = size_of_container*2;
 		std::vector<T> temp(new_size,0);
 		
+		//populating temp with values from fast_q container  starting from head_index to tail_index
 		for (int i = 0; i < size_of_container; i++)
 		{
 			temp[i] = fast_q[(head_index+number_of_elements)%size_of_container];
 			head_index++;
 		}
 
-
+		//reset property values in accordance with the resized vector
 		head_index = 0;
 		tail_index = size_of_container - 1;
 		size_of_container = new_size;
 
 		std::swap(fast_q, temp);
 
+		//insert the new element into newly expanded vector
 		fast_q[++tail_index] = element;
 		number_of_elements++;
 
@@ -59,7 +61,7 @@ void FastQueue<T>::enqueue(T element){
 		fast_q[++tail_index] = element;
 		number_of_elements++;
 	}
- 	//if out of range of container
+ 	//if out of range of container, insert element in beginnning of container
 	else if(tail_index == size_of_container-1)
 	{
 		tail_index = 0;
@@ -67,7 +69,7 @@ void FastQueue<T>::enqueue(T element){
 		number_of_elements++;
 	}
 	
-}//end enqueue
+}//end enqueue()
 		
 
 //removes an element from the head of the queue
@@ -75,7 +77,6 @@ void FastQueue<T>::enqueue(T element){
 template<typename T>
 void FastQueue<T>::dequeue(){
 
-	//if queue is empty, do nothing
 	if (!size() == 0)
 	{
 		fast_q[head_index] = 0;
@@ -93,69 +94,44 @@ void FastQueue<T>::dequeue(){
 //returns reference to head_index
 //throws out of range if container is empty
 template<typename T>
-T& FastQueue<T>::head(){
-	try
-	{
-		if (size() == 0){
-			throw std::out_of_range("OUT OF RANGE ERROR: empty container");
-		}
-		else
-			return fast_q[head_index];
+T& FastQueue<T>::head()
+{
+	if (size() == 0){
+		throw std::out_of_range("OUT OF RANGE ERROR: empty container");
 	}
-	catch(std::out_of_range& error_msg)
-	{
-		std::cerr << error_msg.what() << std::endl;
-	}
+	else 
+		return fast_q[head_index];
 }//end head()
 
 //returns reference to the last element of the queue
 //throws out of range if the container is empty
 template<typename T>
-T& FastQueue<T>::tail(){
-	try{
-		//check if empty, if so then throw error
-		if(size() == 0){
-			throw std::out_of_range("OUT OF RANGE ERROR: empty container");
-		}
-		else
-			//if not empty, return element at tail_index
-			return fast_q[tail_index];
+T& FastQueue<T>::tail()
+{
+	//check if empty, if so then throw error
+	if(size() == 0){
+		throw std::out_of_range("OUT OF RANGE ERROR: empty container");
 	}
-	catch(const std::out_of_range& error_msg)
-	{
-		//error message if exception throw
-		std::cerr << error_msg.what() << std::endl;
-	}
+	else 
+		return fast_q[tail_index];
 }//end tail()
 
 
 //returns reference to the index-th element of the queue.
 //throws out of range if container size is less than index
 template<typename T>
-T& FastQueue<T>::at(int index){
-	try
-	{
-		//throw out of range if there are less elements than index
-		if (size() <= index){
-			throw std::out_of_range("OUT OF RANGE ERROR: container size is less than index");
-		}
-		else
+T& FastQueue<T>::at(int index)
+{
+	//throw out of range if there are less elements than index
+	if (size() <= index){
+		throw std::out_of_range("OUT OF RANGE ERROR: container size is less than index");
+	}
+	else if (head_index + index < size_of_container)
 		{
-			if (head_index + index < size_of_container)
-			{
-				return fast_q[head_index + index];
-			}
-			else
-			{
-				return fast_q[(head_index + index) - size_of_container];
-			}
+			return fast_q[head_index + index];
 		}
-	}
-	catch(const std::out_of_range& e)
-	{
-		std::cerr << e.what() << std::endl;
-	}
-	
+	else
+		return fast_q[(head_index + index) - size_of_container];
 }//end at()
 
 
@@ -175,10 +151,11 @@ int FastQueue<T>::capacity(){
 
 //shrinks the size of allocated memory to exactly fit the elements currently in queue
 template<typename T>
-void FastQueue<T>::shrink_to_fit(){
+void FastQueue<T>::shrink_to_fit()
+{
 	std::vector<T> new_v(number_of_elements,0);
 	
-	
+	//populare new_v with elements starting from head_index to tail_index from fast_q
 	for (int i = 0; i < number_of_elements; i++)
 	{
 		new_v[i] = fast_q[(head_index + size_of_container)% size_of_container];
@@ -187,23 +164,10 @@ void FastQueue<T>::shrink_to_fit(){
 	
 	std::swap(fast_q, new_v);
 
+	//reset property values in accordance with the resized vector
 	head_index = 0;
 	tail_index = number_of_elements - 1;
 	size_of_container = number_of_elements;
-
-	print();
 	
 }//end shrink_to_fit()
 
-
-
-
-//For debugging purposes only
-//prints entire container
-template<typename T>
-void FastQueue<T>::print(){
-	for(T item: fast_q){
-		std::cout << item << " ";
-	}
-	std::cout << std::endl;
-}
