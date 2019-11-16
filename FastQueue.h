@@ -15,36 +15,24 @@ class FastQueue
 {
 	public:
 		FastQueue();
-		void enqueue(T element);
+		void enqueue(const T& element);
 		void dequeue();
-		T& head();
-		T& tail();
-		T& at(int index);
-		int size();
-		int capacity();
+		T& head();//return head_index
+		T& tail();//return tail_index
+		T& at(int index);//return element at index relative to head_index
+		int size();//return number_of_elements
+		int capacity();//return size_of_container
 		void shrink_to_fit();
 
-	//For debugging purposes
-		void print();
 	private:
 		std::vector<T> fast_q;
 		int number_of_elements;
-		int size_of_container;
-		T head_index;
-		T tail_index;
+		int size_of_container;//allocated space for container
+		T head_index;//head
+		T tail_index;//tail
 
 	
-};
-
-//bugs
-/*
--readjust head_index and tail_index after increasing container size
-
-
-
-
-*/
-
+};//end FastQueue
 
 
 #include "FastQueue.cpp"
