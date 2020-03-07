@@ -8,7 +8,12 @@
 
 import Foundation
 
-class FastQueue {
+
+//  Underlying structure is a vector
+//  Acts similar to a queue
+//  Auto resizes itself 
+class FastQueue:Collection {
     
 }
+
 
