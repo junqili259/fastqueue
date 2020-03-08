@@ -21,6 +21,7 @@ class FastQueue<Element>:Collection {
     //  @startIndex - 1st element in the fastqueue
     //  @endIndex - last element in the fastqueue
     //  @count - # of elements in the fastqueue
+    //  @isEmpty - return true if queue is empty, else false
     var startIndex: Array<Element>.Index {return contains.startIndex}
     var endIndex: Array<Element>.Index {return contains.endIndex}
     var count: Int {return contains.count}
@@ -40,20 +41,18 @@ class FastQueue<Element>:Collection {
         contains.insert(element, at: startIndex)
     }
     
+    func remove() {
+        contains.removeFirst()
+    }
+    
     func printFastQueue() {
         print(contains)
     }
 
 }
 
-var bag = FastQueue<Int>()
-print(bag.isEmpty, bag.count)
-bag.insert(element: 10)
-print(bag[0])
-bag.insert(element: 11)
-print(bag[1])
-print(bag.isEmpty, bag.count)
-bag.printFastQueue()
+
+
 
 
 
