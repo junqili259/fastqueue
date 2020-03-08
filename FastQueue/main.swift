@@ -12,9 +12,6 @@ import Foundation
 //  Auto resizes itself 
 class FastQueue<Element>:Collection {
     
-    
-    
-    //typealias FastQueueType = Array<Element>
     typealias Element = Array<Element>.Element
     typealias Index = Array<Element>.Index
     
@@ -27,8 +24,7 @@ class FastQueue<Element>:Collection {
     var startIndex: Array<Element>.Index {return contains.startIndex}
     var endIndex: Array<Element>.Index {return contains.endIndex}
     var count: Int {return contains.count}
-    
-    
+    var isEmpty: Bool {return contains.isEmpty}
     
     //  returns element from user defined postion
     subscript(position: Array<Element>.Index) -> Element {
@@ -39,9 +35,25 @@ class FastQueue<Element>:Collection {
         return contains.index(after: i)
     }
     
+    //  inserts an element into the queue
+    func insert(element: Array<Element>.Element) {
+        contains.insert(element, at: startIndex)
+    }
     
-    
+    func printFastQueue() {
+        print(contains)
+    }
+
 }
+
+var bag = FastQueue<Int>()
+print(bag.isEmpty, bag.count)
+bag.insert(element: 10)
+print(bag[0])
+bag.insert(element: 11)
+print(bag[1])
+print(bag.isEmpty, bag.count)
+bag.printFastQueue()
 
 
 
