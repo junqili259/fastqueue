@@ -16,7 +16,7 @@ class FastQueue<Element>:Collection {
     typealias Index = Array<Element>.Index
     
     //  Array container as underlying structure
-    var contains = Array<Element>()
+    private var contains = Array<Element>()
     
     //  @startIndex - 1st element in the fastqueue
     //  @endIndex - last element in the fastqueue
@@ -41,10 +41,13 @@ class FastQueue<Element>:Collection {
         contains.insert(element, at: startIndex)
     }
     
+    //  removes 1st element of the queue
     func remove() {
         contains.removeFirst()
     }
     
+    //  mainly for debugging purposes
+    //  prints entire queue
     func printFastQueue() {
         print(contains)
     }
